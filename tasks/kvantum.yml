@@ -1,0 +1,7 @@
+---
+- name: Clone Kvantum repository
+  ansible.builtin.git:
+    repo: https://github.com/tsujan/Kvantum.git
+    dest: /tmp/kvantum
+    version: V1.0.0
+    single_branch: yes

@@ -1,0 +1,30 @@
+---
+- name: Install apps
+  ansible.builtin.package:
+    name:
+      - chromium
+      - remmina
+      - tor
+      - pgadmin4
+      - yakuake
+      - vim
+      - pciutils
+    state: present
+
+- name: Install Docker
+  ansible.builtin.package:
+    name:
+      - docker
+      - python3-docker-compose
+      - docker-zsh-completion
+    state: present
+
+- name: Install Redis
+  ansible.builtin.package:
+    name: redis
+    state: present
+
+- name: Install basic clients and utilities for PostgreSQL
+  ansible.builtin.package:
+    name: postgresql13
+    state: present

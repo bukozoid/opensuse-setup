@@ -1,0 +1,33 @@
+---
+- name: openSUSE Leap 15.3 setup
+  hosts: all
+  become: yes
+  connection: local
+  vars_files:
+    - config.yml
+
+  tasks:
+
+    - import_tasks: tasks/apps.yml
+      when: install_apps
+      tags: ['apps']
+
+    - import_tasks: tasks/kubeapps.yml
+      when: install_kubeapps
+      tags: ['kubeapps']
+
+    - import_tasks: tasks/repos.yml
+      when: add_repos
+      tags: ['repos']
+
+    - import_tasks: tasks/snap.yml
+      when: install_snapd
+      tags: ['snapd']
+
+    - import_tasks: tasks/via_snap.yml
+      when: install_via_snap
+      tags: ['via_snap']
+
+    - import_tasks: tasks/zsh.yml
+      when: install zsh
+      tags: ['zsh']

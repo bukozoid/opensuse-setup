@@ -1,0 +1,65 @@
+---
+- name: Install zsh
+  ansible.builtin.package:
+    name: zsh
+    state: present
+
+- name: Create a directory for fonts
+  ansible.builtin.file:
+    path: /usr/local/share/fonts/m/
+    state: directory
+    mode: '0755'
+
+- name: Install Meslo Fonts
+  ansible.builtin.get_url:
+    url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20{{ item }}.ttf
+    dest: /usr/local/share/fonts/m/MesloLGS_NF_{{ item }}.ttf
+    mode: 0644
+  loop:
+    - Regular
+    - Bold
+    - Italic
+
+- name: Install Meslo Fonts Bold_Italic
+  ansible.builtin.get_url:
+    url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
+    dest: /usr/local/share/fonts/m/MesloLGS_NF_Bold_Italic.ttf
+    mode: 0644
+
+- block:
+
+  - name:
+    ansible.builtin.copy:
+      src: ./files/{{ item }}
+      dest: "~"
+      owner: "{{ username }}"
+      group: users
+      mode: 0644
+    loop:
+      - .zshrc
+      - .p10k.zsh
+
+  - name: Create zsh directories
+    ansible.builtin.file:
+      path: ~/.zsh/{{item}}
+      state: directory
+    loop:
+      - plugins
+      - themes
+
+  - name: zsh-autosuggestions, zsh-syntax-highlighting
+    ansible.builtin.git:
+      repo: https://github.com/zsh-users/{{ item }}.git
+      dest: ~/.zsh/plugins/{{ item }}
+      depth: 1
+    loop:
+      - zsh-autosuggestions
+      - zsh-syntax-highlighting
+
+  - name: Install Powerlevel10k
+    ansible.builtin.git:
+      repo: https://github.com/romkatv/powerlevel10k.git
+      dest: ~/.zsh/themes/powerlevel10k
+      depth: 1
+
+  become_user: "{{ username }}"

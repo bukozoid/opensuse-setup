@@ -1,0 +1,11 @@
+---
+- name: Install vscode
+  community.general.snap:
+    name: code
+    classic: yes
+    state: present
+
+- name: Install Joplin
+  community.general.snap:
+    name: joplin-desktop
+    state: present

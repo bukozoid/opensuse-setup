@@ -1,0 +1,7 @@
+---
+- name: Add Pacman repository
+  community.general.zypper_repository:
+    name: packman
+    repo: http://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Leap_15.3/
+    auto_import_keys: yes
+    state: present
